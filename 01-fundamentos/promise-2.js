@@ -1,8 +1,8 @@
 function sumarUno( numero ) {
 
-    var promesa = new Promise(function(resolve, reject) {
+    var promesa = new Promise((resolve, reject) => {
  
-        setTimeout( function() {
+        setTimeout(() => {
             
             resolve( numero + 1 );
 
@@ -13,6 +13,14 @@ function sumarUno( numero ) {
     return promesa;
 }
 
-sumarUno( 5 ).then( function( nuevoNumero ) {
-    console.log(nuevoNumero);
+sumarUno( 5 ).then( nuevoNumero => {
+    console.log( nuevoNumero );
+    return sumarUno( nuevoNumero );
+})
+.then( nuevoNumero => {
+    console.log( nuevoNumero );
+    return sumarUno( nuevoNumero );
+})
+.then( nuevoNumero => {
+    console.log( nuevoNumero );
 });
