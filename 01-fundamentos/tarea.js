@@ -45,15 +45,21 @@
 */
 
 // Resolución de la tarea #2
-fetch('https://swapi.dev/api/people/1/', {
-    method: 'POST',
-    body: JSON.stringify({nombre: 'AndromedA', edad: 22}),
-    header: {
-        'Contet-Type': 'application/json'
-    }
-})
+function postData( persona ) {
+    return fetch('https://reqres.in/api/users', {
+        method: 'POST',
+        body: JSON.stringify({nombre: persona.name, genero: persona.gender}),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+}
+
+fetch('https://swapi.dev/api/people/1/',)
 .then(res => res.json())
-.then( console.log )
+.then( postData )
+.then(res => res.json())
+.then(console.log)
 .catch(err => {
     console.log('Error en la petición');
     console.log(err);
