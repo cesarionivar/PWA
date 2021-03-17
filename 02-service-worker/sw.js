@@ -4,22 +4,14 @@
 
 self.addEventListener('fetch', event => {
 
-    if( event.request.url.includes('style.css') ) {
+    if( event.request.url.includes('main.jpg') ) {
 
-        let respuesta = new Response(`
-            body {
-                background-color: red !important;
-                color: pink;
-            }
-        `, {
-            headers: {
-                'Content-Type': 'text/css'
-            }
-        });
+        let respuesa = fetch('img/main-patas-arriba.jpg');
 
-        event.respondWith( respuesta );
+        event.respondWith(respuesa);
 
     }
+
 });
     
         
