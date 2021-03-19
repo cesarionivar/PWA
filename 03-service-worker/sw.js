@@ -35,13 +35,23 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
 
     // Aplicar estratigias del cache
-    console.log('SW: ', e.request.url);
+    /* console.log('SW: ', e.request.url);
 
     if(e.request.url.includes('https://reqres.in/')) {
         const resp = new Response(`{ "ok": "false", "mensaje": "jajaja"}`);
 
         e.respondWith( resp );
-    }
+    } */
 
 
 });
+
+
+// SYNC: Recuperamos la conexión a internet
+self.addEventListener('sync', e => {
+
+    console.log('Tenemos conexión');
+    console.log(e);
+    console.log(e.tag);
+
+}); 
