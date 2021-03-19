@@ -4,12 +4,21 @@ self.addEventListener('install', e =>{
 
     // Descargar assets
     // Creamos un cache
-
-
+    
     console.log(`SW: Instalando service worker`);
-    
-    self.skipWaiting();
-    
+
+    const instalacion = new Promise((resolve, reject) => {
+        
+        setTimeout(() => {
+            console.log('SW: Instalaciones terminadas');
+            self.skipWaiting();
+            resolve();
+        }, 1000);    
+
+    });
+
+    e.waitUntil(instalacion);
+
 });
 
 
