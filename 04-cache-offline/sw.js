@@ -1,15 +1,15 @@
 
 self.addEventListener('fetch',  e => {
 
-    // const offlineResp = new Response(`
+    /* const offlineResp = new Response(`
         
-    //     Bienvenido a mi Página Web
+        Bienvenido a mi Página Web
 
-    //     Disculpa, pero para usarla, necesitas internet
+        Disculpa, pero para usarla, necesitas internet
 
-    // `);
+    `); */
 
-    const offlineResp = new Response(`
+    /* const offlineResp = new Response(`
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -26,7 +26,10 @@ self.addEventListener('fetch',  e => {
         headers: {
             'Content-Type': 'text/html'
         }
-    });
+    }); */
+
+
+    const offlineResp = fetch('./pages/offline.html');
 
     const resp = fetch(e.request)
         .catch(() => offlineResp);
