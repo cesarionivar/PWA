@@ -3,8 +3,9 @@
 
 const CACHE_STATIC_NAME = 'static-v2';
 const CACHE_DYNAMIC_NAME = 'dynamic-v1';
-
 const CACHE_INMUTABLE_NAME = 'inmutable-v1';
+
+const CACHE_DYNAMIC_LIMIT = 50;
 
 function limpiarCache(cacheName, numeroItems) {
 
@@ -52,7 +53,7 @@ self.addEventListener('fetch', e => {
     // e.respondWith( caches.match(e.request) );
 
     // 2 - Cache with Network Fallback -> Si no lo encuentra en el cache intenta en la web
-    const respuesta = caches.match( e.request )
+    /* const respuesta = caches.match( e.request )
         .then( res => {
             if( res ) return res;
 
@@ -70,8 +71,34 @@ self.addEventListener('fetch', e => {
 
                     return newResp.clone();
                 });
+        }); */
+
+
+        // 3 - Netowork with cache fallback
+
+        const respuesta = fetch( e.request ).then( res => {
+
+            if( !res ) return caches.match( e.request );
+
+            console.log('Fetch', res);
+
+            caches.open( CACHE_DYNAMIC_NAME )
+                .then(cache => {
+                    cache.put(e.request, res);
+                    limpiarCache( CACHE_DYNAMIC_NAME, CACHE_DYNAMIC_LIMIT );
+                });
+
+
+            return res.clone();
+        }).catch(err => {
+
+            return caches.match( e.request );
+
         });
 
-    e.respondWith( respuesta );
+        e.respondWith( respuesta ); 
+        
+        
+
 
 }); 
