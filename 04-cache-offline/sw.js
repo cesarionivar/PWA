@@ -74,29 +74,52 @@ self.addEventListener('fetch', e => {
         }); */
 
 
-        // 3 - Netowork with cache fallback
+    // 3 - Netowork with cache fallback
 
-        const respuesta = fetch( e.request ).then( res => {
+    /* const respuesta = fetch( e.request ).then( res => {
 
-            if( !res ) return caches.match( e.request );
+        if( !res ) return caches.match( e.request );
 
-            console.log('Fetch', res);
+        console.log('Fetch', res);
 
-            caches.open( CACHE_DYNAMIC_NAME )
-                .then(cache => {
-                    cache.put(e.request, res);
-                    limpiarCache( CACHE_DYNAMIC_NAME, CACHE_DYNAMIC_LIMIT );
-                });
+        caches.open( CACHE_DYNAMIC_NAME )
+            .then(cache => {
+                cache.put(e.request, res);
+                limpiarCache( CACHE_DYNAMIC_NAME, CACHE_DYNAMIC_LIMIT );
+            });
 
 
-            return res.clone();
-        }).catch(err => {
+        return res.clone();
+    }).catch(err => {
 
-            return caches.match( e.request );
+        return caches.match( e.request );
 
-        });
+    });
 
-        e.respondWith( respuesta ); 
+    e.respondWith( respuesta );  */
+
+
+
+
+    // 4 - Cache with network update
+    // Rendiemiento es critico
+    // Siempre estaran un paso atras
+
+    if( e.request.url.includes('bootstrap')) {
+        return e.respondWith(caches.match( e.request ));  
+    }
+
+    const respuesta = caches.open( CACHE_STATIC_NAME ).then(cache => {
+
+        fetch( e.request )
+            .then( newResp => cache.put( e.request, newResp ));
+
+        return cache.match( e.request );
+
+    });
+
+    e.respondWith( respuesta );
+    
         
         
 
