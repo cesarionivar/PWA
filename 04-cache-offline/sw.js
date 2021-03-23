@@ -32,7 +32,8 @@ self.addEventListener('install', e => {
                 './index.html',
                 './css/style.css',
                 './img/main.jpg',
-                './js/app.js'
+                './js/app.js',
+                './img/no-img.jpg'
             ]);
         });
 
@@ -105,7 +106,7 @@ self.addEventListener('fetch', e => {
     // Rendiemiento es critico
     // Siempre estaran un paso atras
 
-    if( e.request.url.includes('bootstrap')) {
+    /* if( e.request.url.includes('bootstrap')) {
         return e.respondWith(caches.match( e.request ));  
     }
 
@@ -118,9 +119,43 @@ self.addEventListener('fetch', e => {
 
     });
 
-    e.respondWith( respuesta );
+    e.respondWith( respuesta ); */
+
+
+    // 5 - Cache and Network race
+
+    const respuesta = new Promise( (resolve, reject) => {
+
+        let rechazada = false;
+        const falloUnaVez = () => {
+            if( rechazada ) {
+
+                if(/\.(png|jpg)$/i.test( e.request.url ) ) {
+
+                    resolve( caches.match('./img/no-image.jpg'));
+
+                } else {
+                    reject('No se encontro respuesta');
+                }
+
+            } else {
+                rechazada = true;
+            }
+
+        }
+
+        fetch( e.request ).then(res => {
+            res.ok ? resolve(res) : falloUnaVez();
+        }).catch( falloUnaVez );
+            
+        caches.match(e.request)
+            .then(res => {
+                res ? resolve(res) : falloUnaVez();
+            }).catch( falloUnaVez )
+
+    });
     
-        
+    e.respondWith( respuesta );
         
 
 
