@@ -1,4 +1,4 @@
-const CACHE_STATIC_NAME = 'static-v2';
+const CACHE_STATIC_NAME = 'static-v7';
 const CACHE_DYNAMIC_NAME = 'dynamic-v1';
 const CACHE_INMUTABLE_NAME = 'inmutable-v1';
 
@@ -30,6 +30,7 @@ self.addEventListener('install', e=> {
                 '/img/main.jpg',
                 '/js/app.js',
                 '/img/no-img.jpg',
+                '/pages/page2.html',
                 '/pages/offline.html'
             ]);
         });
@@ -44,6 +45,27 @@ self.addEventListener('install', e=> {
     e.waitUntil( Promise.all([cacheProm, cacheInmutable]) );
 
 });
+
+
+self.addEventListener('activate', e => {
+
+    const respuesta = caches.keys().then( keys => {
+
+        keys.forEach( key => {
+
+            if( key !== CACHE_STATIC_NAME && key.includes('static')) {
+                return caches.delete(key);
+            }
+
+        });
+
+    });
+
+
+    e.waitUntil( respuesta );
+
+});
+
 
 self.addEventListener('fetch', e => {
 
