@@ -223,6 +223,22 @@ isOnline();
 
 // Notificaciones
 
+function verificaSuscripcion( activadas ) {
+
+    if( activadas ) {
+
+        btnActivadas.removeClass('oculto');
+        btnDesactivadas.addClass('oculto');
+        
+    } else {
+        btnActivadas.addClass('oculto');
+        btnDesactivadas.removeClass('oculto');
+    }
+
+}
+
+verificaSuscripcion();
+
 function enviarNotificacion() {
 
     const notificationOpts = { 
@@ -269,6 +285,6 @@ function notificarme() {
     }
 }
 
-notificarme();
+// notificarme();
 
 
