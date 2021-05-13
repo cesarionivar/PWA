@@ -10,9 +10,13 @@ function guardarMensaje( mensaje ) {
 
   mensaje._id = new Date().toISOString();
   
-  db.put( mensaje ).then( () => {
+  return db.put( mensaje ).then( () => {
 
-    console.log('Mensaje guardado para posterior posteo');
+    self.registration.sync.register('nuevo-post');
+
+    const newResp = { ok: true, offline: true };
+
+    return new Response( JSON.stringify(newResp) );
 
   });
 

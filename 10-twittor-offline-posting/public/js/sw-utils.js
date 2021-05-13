@@ -30,29 +30,30 @@ function manejoApiMensajes(cacheName, req) {
   if( req.clone().method === 'POST') {
     // Posteo un nuevo mensaje
 
-    req.clone().text().then(body => {
-      
-      const bodyObj = JSON.parse( body );
-      guardarMensaje(bodyObj);
+    if( self.registration.sync ) {
+      return req.clone().text().then(body => {
+        
+        const bodyObj = JSON.parse( body );
+        return guardarMensaje(bodyObj);
 
+      });
 
-    });
+    } else {
 
-    // guardar en el index db
-
-    return fetch( req );
+      return fetch(req);
+    }
 
   } else {
 
     return fetch(req)
-    .then((res) => {
-      if (res.ok) {
-        actualizaCacheDinamico(cacheName, req, res.clone());
-        return res.clone();
-      } else {
-        return caches.match(req);
-      }
-    })
+      .then((res) => {
+        if (res.ok) {
+          actualizaCacheDinamico(cacheName, req, res.clone());
+          return res.clone();
+        } else {
+          return caches.match(req);
+        }
+      })
     .catch((err) => {
       return caches.match(req);
     });

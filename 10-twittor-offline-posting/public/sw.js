@@ -1,7 +1,7 @@
 // imports
 importScripts('https://cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js');
-importScripts("js/sw-db.js");
-importScripts("js/sw-utils.js");
+importScripts("./js/sw-db.js");
+importScripts("./js/sw-utils.js");
 
 const STATIC_CACHE = "static-v1";
 const DYNAMIC_CACHE = "dynamic-v1";
@@ -79,3 +79,15 @@ self.addEventListener("fetch", (e) => {
 
   e.respondWith(respuesta);
 });
+
+
+self.addEventListener('sync', e => {
+
+  console.log('SW: Sync');
+
+  if( e.tag === 'nuevo-post') {
+    // postear a DB cuando hay conexión
+    // e.waitUntil(  );
+  }
+
+})
