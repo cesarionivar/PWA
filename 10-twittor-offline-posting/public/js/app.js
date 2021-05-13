@@ -1,3 +1,5 @@
+import '@dmuy/toast/dist/mdtoast.css';
+import mdtoast from '@dmuy/toast';
 
 var url = window.location.href;
 var swLocation = '/twittor/sw.js';
@@ -180,3 +182,30 @@ function getMensajes() {
 }
 
 getMensajes();
+
+
+// Detectar cambios de conexion
+function isOnline() {
+
+    if(navigator.onLine) {
+        
+        mdtoast('Online', {
+            interaction: true,
+            interactionTimeout: 1000,
+            actionText: 'Ok!'
+        });
+        
+    } else {
+    
+        mdtoast('Offline', {
+            interaction: true,
+            actionText: 'Ok!'
+        });
+        
+    }
+
+}
+
+window.addEventListener('online', isOnline);
+window.addEventListener('offline', isOnline);
+isOnline();

@@ -27,7 +27,9 @@ const APP_SHELL_INMUTABLE = [
   "https://use.fontawesome.com/releases/v5.3.1/css/all.css",
   "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css",
   "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js",
-  'https://cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js'
+  'https://cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js',
+  'https://cdn.jsdelivr.net/gh/dmuy/Material-Toast@{version}/dist/mdtoast.css',
+  'https://cdn.jsdelivr.net/gh/dmuy/Material-Toast@{version}/dist/mdtoast.js'
 ];
 
 self.addEventListener("install", (e) => {
