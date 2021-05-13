@@ -287,4 +287,13 @@ function notificarme() {
 
 // notificarme();
 
+function getPublicKey() {
 
+    return fetch('api/key')
+        .then(res => res.arrayBuffer())
+        // retornar arreglo, pero com un Uint8Array
+        .then( key => new Uint8Array(key));
+
+}
+
+getPublicKey().then(console.log);
