@@ -12,7 +12,7 @@ webpush.setVapidDetails(
   vapid.privateKey
 );
 
-const suscripciones = require('./subs-db.json');
+let suscripciones = require('./subs-db.json');
 
 module.exports.getKey = () => {
   return urlSafeBase64.decode(vapid.publicKey);
@@ -29,9 +29,37 @@ module.exports.addSubscription = (suscripcion) => {
  
 module.exports.sendPush = ( post ) => {
 
+  console.log('Mandando PUSHES');
+
+
+  let notificacioneEnviadas = [];
+
   suscripciones.forEach((suscripcion, index) => {
 
-    webpush.sendNotification(suscripcion, JSON.stringify(post));
+    const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
+      .then(console.log('Notificacion enviada'))
+      .catch(err => {
+        console.log('Notificacion fallo');
+
+        if(err.statusCode === 410) { // Gone
+
+          suscripciones[index].borrar = true;
+
+        }
+
+
+      });
+
+    notificacioneEnviadas.push(pushProm);
+
+  });
+
+  Promise.all(notificacioneEnviadas).then( () => {
+
+    suscripciones = suscripciones.filter(subs => !subs.borrar);
+
+    fs.writeFileSync(`${__dirname}/subs-db.json`, JSON.stringify(suscripciones));
+
 
   });
 
