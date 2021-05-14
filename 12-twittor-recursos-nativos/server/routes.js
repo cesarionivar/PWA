@@ -32,11 +32,12 @@ router.post('/', function (req, res) {
     user: req.body.user,
     lat: req.body.lat,
     lng: req.body.lng,
+    foto: req.body.foto,
   };
 
   mensajes.push( mensaje );
 
-  // console.log(mensajes);
+  console.log(mensajes);
 
 
   res.json({
