@@ -135,7 +135,6 @@ self.addEventListener('sync', e => {
 self.addEventListener('push', e => {
 
     const data = JSON.parse(e.data.text());
-    console.log(data);
 
     const title = data.titulo;
     const options = {
@@ -144,9 +143,44 @@ self.addEventListener('push', e => {
         badge: 'img/favicon.ico',
         image: 'https://cde.laprensa.e3.pe/ima/0/0/1/7/5/175423.jpg',
         vibrate: [125,75,125,275,200,275,125,75,125,275,200,600,200,600],
-        openUrl: '/'
+        openUrl: '/',
+        data: {
+            url: 'https://google.com',
+            id: data.user
+        },
+        actions: [
+            {
+                action: 'thor-action',
+                title: 'Thor',
+                icon: 'img/avatars/thor.jpg'
+            },
+            {
+                action: 'ironman-action',
+                title: 'Iroman',
+                icon: 'img/avatars/ironman.jpg'
+            }
+        ]
     };
 
     e.waitUntil( self.registration.showNotification(title, options) );
+
+});
+
+
+// Cierra la notificacion
+self.addEventListener('notificacionclose', e => {
+    console.log('Notificacion cerrada');
+});
+
+
+self.addEventListener('notificationclick', e => {
+
+    const notificacion = e.notification;
+    const accion = e.action;
+
+    console.log({notificacion, accion});
+
+
+    notificacion.close();
 
 });
