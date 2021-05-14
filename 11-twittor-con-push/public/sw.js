@@ -134,10 +134,18 @@ self.addEventListener('sync', e => {
 // Escuhar PUSH
 self.addEventListener('push', e => {
 
-    console.log(e.data.text());
+    const data = JSON.parse(e.data.text());
+    console.log(data);
 
-    const title = e.data.text();
-    const options = {};
+    const title = data.titulo;
+    const options = {
+        body: data.cuerpo,
+        icon: `img/avatars/${data.usuario}.jpg`,
+        badge: 'img/favicon.ico',
+        image: 'https://cde.laprensa.e3.pe/ima/0/0/1/7/5/175423.jpg',
+        vibrate: [125,75,125,275,200,275,125,75,125,275,200,600,200,600],
+        openUrl: '/'
+    };
 
     e.waitUntil( self.registration.showNotification(title, options) );
 
