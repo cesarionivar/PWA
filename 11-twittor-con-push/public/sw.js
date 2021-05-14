@@ -129,6 +129,16 @@ self.addEventListener('sync', e => {
         e.waitUntil( respuesta );
     }
 
+});
 
+// Escuhar PUSH
+self.addEventListener('push', e => {
+
+    console.log(e.data.text());
+
+    const title = e.data.text();
+    const options = {};
+
+    e.waitUntil( self.registration.showNotification(title, options) );
 
 });
